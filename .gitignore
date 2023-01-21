@@ -1,3 +1,7 @@
+#image
+tmp
+uploads
+
 # Logs
 logs
 *.log

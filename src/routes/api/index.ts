@@ -1,7 +1,11 @@
 import { Router } from 'express';
 
-const router = Router();
+// Controllers
+import { ImageController } from '@controller/image.controller';
 
-router.get('/', (req, res) => res.send('Hello'));
+const router = Router();
+const imageController = new ImageController();
+
+router.post('/upload', imageController.upload);
 
 export { router };

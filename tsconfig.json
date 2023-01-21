@@ -14,7 +14,10 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "paths": {
       "@src/*": ["./*"],
-      "@controller/*": ["./controllers/*"]
+      "@controller/*": ["./controllers/*"],
+      "@middleware/*": ["./middleware/*"],
+      "@config/*": ["./config/*"],
+      "@interfaces/*": ["./interfaces/*"]
     }
   },
   "include": ["./**/*.ts"]

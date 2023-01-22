@@ -12,7 +12,7 @@ const storagePath = path.join(__dirname, '..', '..', 'tmp', 'uploads');
  * @param file
  * @param cb
  */
-const destination = (req: Request, file: UploadFile, cb: Function) =>
+export const destination = (req: Request, file: UploadFile, cb: Function) =>
 	cb(null, storagePath);
 
 /**
@@ -21,7 +21,7 @@ const destination = (req: Request, file: UploadFile, cb: Function) =>
  * @param originalname
  * @param cb
  */
-const filename = async (
+export const filename = async (
 	req: Request,
 	{ originalname }: UploadFile,
 	cb: Function
@@ -42,7 +42,11 @@ const filename = async (
  * @param mimetype
  * @param cb
  */
-const fileFilter = (req: Request, { mimetype }: UploadFile, cb: Function) => {
+export const fileFilter = (
+	req: Request,
+	{ mimetype }: UploadFile,
+	cb: Function
+) => {
 	const allowedTypes = ['image/png', 'image/jpeg'];
 
 	if (!allowedTypes.includes(mimetype)) cb(new Error('Invalid file type'));

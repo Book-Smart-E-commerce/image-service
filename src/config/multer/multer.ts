@@ -71,5 +71,8 @@ export const config = {
 		destination,
 		filename,
 	}),
+	limits: {
+		fileSize: 3 * 1024 * 1024,
+	},
 	fileFilter,
 };

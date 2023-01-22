@@ -1,4 +1,4 @@
-import { destination } from '@config/multer';
+import { destination, fileFilter } from '@config/multer';
 import { jest } from '@jest/globals';
 import path from 'path';
 
@@ -12,11 +12,26 @@ const mockPath = path.join(__dirname, '..', '..', '..', 'tmp', 'uploads');
 const mockCallback = jest.fn();
 const request: any = {};
 
-describe('destination', () => {
-	it('should called the callback function', () => {
-		destination(request, file, mockCallback);
+describe('multer', () => {
+	beforeEach(() => {
+		mockCallback.mockClear();
+	});
 
-		expect(mockCallback).toHaveBeenCalledWith(null, mockPath);
-		expect(mockCallback).toBeCalledTimes(1);
+	describe('destination', () => {
+		it('should called the callback function', () => {
+			destination(request, file, mockCallback);
+
+			expect(mockCallback).toHaveBeenCalledWith(null, mockPath);
+			expect(mockCallback).toBeCalledTimes(1);
+		});
+	});
+
+	describe('fileFilter', () => {
+		it('should called the callback function with error, when mimetype is invalid', () => {
+			fileFilter(request, { ...file, mimetype: 'image/gif' }, mockCallback);
+
+			expect(mockCallback).toHaveBeenCalledWith(new Error('Invalid file type'));
+			expect(mockCallback).toBeCalledTimes(1);
+		});
 	});
 });

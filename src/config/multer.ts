@@ -49,9 +49,11 @@ export const fileFilter = (
 ) => {
 	const allowedTypes = ['image/png', 'image/jpeg'];
 
-	if (!allowedTypes.includes(mimetype)) cb(new Error('Invalid file type'));
-
-	cb(null, true);
+	if (allowedTypes.includes(mimetype)) {
+		cb(null, true);
+	} else {
+		cb(new Error('Invalid file type'));
+	}
 };
 
 /**

@@ -9,6 +9,6 @@ import { ImageController } from '@controller/image.controller';
 const router = Router();
 const imageController = new ImageController();
 
-router.post('/upload', upload.single('file'), imageController.upload);
+router.post('/', upload.single('file'), imageController.create);
 
 export { router };

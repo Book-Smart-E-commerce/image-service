@@ -2,8 +2,8 @@ import path from 'path';
 import { Request } from 'express';
 import crypto from 'crypto';
 import { UploadFile } from '@interfaces/UploadFile';
+import multer from 'multer';
 
-const multer = require('multer');
 const storagePath = path.join(__dirname, '..', '..', 'tmp', 'uploads');
 
 /**

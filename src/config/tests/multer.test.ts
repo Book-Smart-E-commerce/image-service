@@ -33,5 +33,12 @@ describe('multer', () => {
 			expect(mockCallback).toHaveBeenCalledWith(new Error('Invalid file type'));
 			expect(mockCallback).toBeCalledTimes(1);
 		});
+
+		it('should called the callback function without error, if mimetype is valid', () => {
+			fileFilter(request, file, mockCallback);
+
+			expect(mockCallback).toHaveBeenCalledWith(null, true);
+			expect(mockCallback).toBeCalledTimes(1);
+		});
 	});
 });

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 class ImageController {
 	constructor() {}
 
-	upload(req: Request, res: Response) {
+	create(req: Request, res: Response) {
 		try {
 			return res.status(201).send({ statusCode: 201, response: 'hello' });
 		} catch ({ message }) {

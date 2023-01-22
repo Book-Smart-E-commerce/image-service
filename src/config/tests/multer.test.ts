@@ -1,6 +1,7 @@
-import { destination, fileFilter } from '@config/multer';
+import { destination, fileFilter, filename } from '@config/multer';
 import { jest } from '@jest/globals';
 import path from 'path';
+import crypto from 'crypto';
 
 const file = {
 	fieldname: 'file',
@@ -38,6 +39,24 @@ describe('multer', () => {
 			fileFilter(request, file, mockCallback);
 
 			expect(mockCallback).toHaveBeenCalledWith(null, true);
+			expect(mockCallback).toBeCalledTimes(1);
+		});
+	});
+
+	describe('filename', () => {
+		it('should called the callback function with custom filename', async () => {
+			const randomBytes = '3c9ea1cad8b123a7cc912375f5706a3d';
+			jest
+				.spyOn(crypto, 'randomBytes')
+				.mockClear()
+				.mockImplementation(() => randomBytes);
+
+			await filename(request, file, mockCallback);
+
+			expect(mockCallback).toHaveBeenCalledWith(
+				null,
+				`${randomBytes}-${file.originalname}`
+			);
 			expect(mockCallback).toBeCalledTimes(1);
 		});
 	});

@@ -59,5 +59,19 @@ describe('multer', () => {
 			);
 			expect(mockCallback).toBeCalledTimes(1);
 		});
+
+		it('should called callback function with error if crypto throws new error', async () => {
+			jest
+				.spyOn(crypto, 'randomBytes')
+				.mockClear()
+				.mockImplementation(() => {
+					throw new Error();
+				});
+
+			await filename(request, file, mockCallback);
+
+			expect(mockCallback).toHaveBeenCalledWith(new Error());
+			expect(mockCallback).toBeCalledTimes(1);
+		});
 	});
 });

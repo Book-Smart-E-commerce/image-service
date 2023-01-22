@@ -4,7 +4,7 @@ import { Router } from 'express';
 import { upload } from '@middleware/multer';
 
 // Controllers
-import { ImageController } from '@controller/image.controller';
+import { ImageController } from '@src/image/image.controller';
 
 const router = Router();
 const imageController = new ImageController();

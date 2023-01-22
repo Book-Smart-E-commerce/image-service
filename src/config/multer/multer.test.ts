@@ -1,4 +1,4 @@
-import { destination, fileFilter, filename } from '@config/multer';
+import { destination, fileFilter, filename } from '@config/multer/multer';
 import { jest } from '@jest/globals';
 import path from 'path';
 import crypto from 'crypto';

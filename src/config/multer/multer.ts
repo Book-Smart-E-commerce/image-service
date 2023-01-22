@@ -1,10 +1,16 @@
 import path from 'path';
 import { Request } from 'express';
 import crypto from 'crypto';
-import { UploadFile } from '@interfaces/UploadFile';
 import multer from 'multer';
 
-const storagePath = path.join(__dirname, '..', '..', 'tmp', 'uploads');
+export interface UploadFile {
+	fieldname: string;
+	originalname: string;
+	encoding: string;
+	mimetype: string;
+}
+
+const storagePath = path.join(__dirname, '..', '..', '..', 'tmp', 'uploads');
 
 /**
  * Function to indicate the folder where the file was saved

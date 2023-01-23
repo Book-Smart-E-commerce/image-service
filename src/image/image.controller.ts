@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Image, ImageDocument } from '@src/image/interfaces/image.interface';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
-import { HttpCustomError } from '@src/common/utils/httpError';
+import { HttpException } from '@src/common/utils/HttpException';
 
 interface Service {
 	create(image: Image): Promise<ImageDocument>;
@@ -15,7 +15,7 @@ class ImageController {
 			const { file } = req;
 
 			if (!file)
-				throw new HttpCustomError(
+				throw new HttpException(
 					HttpStatusCode.BAD_REQUEST,
 					'Unable to upload file'
 				);

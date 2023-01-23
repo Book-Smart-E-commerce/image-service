@@ -3,7 +3,7 @@ export interface HttpError {
 	statusCode?: number;
 }
 
-export class HttpCustomError extends Error {
+export class HttpException extends Error {
 	public statusCode: number;
 
 	constructor(statusCode: number, message: string) {

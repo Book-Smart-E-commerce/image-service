@@ -17,7 +17,8 @@
       "@controller/*": ["./controllers/*"],
       "@middleware/*": ["./middleware/*"],
       "@config/*": ["./config/*"],
-      "@interfaces/*": ["./interfaces/*"]
+      "@image/*": ["./image/*"],
+
     }
   },
   "include": ["./**/*.ts"]

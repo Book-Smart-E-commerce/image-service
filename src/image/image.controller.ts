@@ -14,25 +14,24 @@ class ImageController {
 		try {
 			const { file } = req;
 
-			if (file) {
-				const { originalname: name, filename: key, size } = file;
+			if (!file)
+				throw new HttpCustomError(
+					HttpStatusCode.BAD_REQUEST,
+					'Unable to upload file'
+				);
 
-				const response = await this.service.create({
-					name,
-					url: '',
-					size,
-					key,
-				});
+			const { originalname: name, filename: key, size } = file;
 
-				res
-					.status(HttpStatusCode.CREATED)
-					.send({ statusCode: HttpStatusCode.CREATED, response });
-			}
+			const response = await this.service.create({
+				name,
+				url: '',
+				size,
+				key,
+			});
 
-			throw new HttpCustomError(
-				HttpStatusCode.BAD_REQUEST,
-				'Unable to upload file'
-			);
+			res
+				.status(HttpStatusCode.CREATED)
+				.send({ statusCode: HttpStatusCode.CREATED, response });
 		} catch (e) {
 			next(e);
 		}

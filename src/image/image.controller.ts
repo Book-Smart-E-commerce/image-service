@@ -1,15 +1,42 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { Image, ImageDocument } from '@src/image/interfaces/image.interface';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { HttpCustomError } from '@src/common/utils/httpError';
+
+interface Service {
+	create(image: Image): Promise<ImageDocument>;
+}
 
 class ImageController {
-	constructor() {}
+	constructor(private service: Service) {}
 
-	create(req: Request, res: Response) {
+	create = async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			return res.status(201).send({ statusCode: 201, response: 'hello' });
-		} catch ({ message }) {
-			res.status(500).send({ statusCode: 500, error: message });
+			const { file } = req;
+
+			if (file) {
+				const { originalname: name, filename: key, size } = file;
+
+				const response = await this.service.create({
+					name,
+					url: '',
+					size,
+					key,
+				});
+
+				res
+					.status(HttpStatusCode.CREATED)
+					.send({ statusCode: HttpStatusCode.CREATED, response });
+			}
+
+			throw new HttpCustomError(
+				HttpStatusCode.BAD_REQUEST,
+				'Unable to upload file'
+			);
+		} catch (e) {
+			next(e);
 		}
-	}
+	};
 }
 
 export { ImageController };

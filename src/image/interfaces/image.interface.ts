@@ -2,6 +2,7 @@ import { HydratedDocument } from 'mongoose';
 
 export interface Image {
 	name: string;
+	description: string;
 	size: number;
 	key: string;
 	url: string;

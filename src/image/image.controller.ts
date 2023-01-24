@@ -12,7 +12,10 @@ class ImageController {
 
 	create = async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const { file } = req;
+			const {
+				file,
+				body: { description },
+			} = req;
 
 			if (!file)
 				throw new HttpException(
@@ -24,6 +27,7 @@ class ImageController {
 
 			const response = await this.service.create({
 				name,
+				description: description ?? '',
 				url: '',
 				size,
 				key,

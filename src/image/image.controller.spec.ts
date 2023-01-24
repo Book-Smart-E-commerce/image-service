@@ -27,6 +27,9 @@ const mockRequest = {
 		path: 'rootdir//tcc//image-service//tmp//uploads//724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
 		size: 11189,
 	},
+	body: {
+		description: 'Description of image',
+	},
 } as Request;
 
 const mockResponse = () => {
@@ -53,13 +56,20 @@ describe('ImageController', () => {
 		it('should return an image if the file exists in the request', async () => {
 			await controller.create(mockRequest, res, mockNextFunction);
 
-			expect(mockService.create).toHaveBeenCalled();
 			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.CREATED);
+			expect(mockService.create).toHaveBeenCalledWith({
+				name: 'test.png',
+				description: 'Description of image',
+				url: '',
+				size: 11189,
+				key: '724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
+			});
 			expect(res.send).toHaveBeenCalledWith({
 				statusCode: HttpStatusCode.CREATED,
 				response: {
 					_id: '63cfde53c12118dcd67b654d',
 					name: 'test.png',
+					description: 'Description of image',
 					size: 11189,
 					key: '724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
 					url: 'http://localhost:4700/img/724bccb7e54e8aca0e86a5d62f8ae79a-test.png',

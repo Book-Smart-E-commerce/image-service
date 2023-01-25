@@ -5,6 +5,7 @@ import { HttpException } from '@src/common/utils/HttpException';
 
 interface Service {
 	create(image: Image): Promise<ImageDocument>;
+	findOne(id: string): Promise<ImageDocument>;
 }
 
 class ImageController {
@@ -36,6 +37,22 @@ class ImageController {
 			return res
 				.status(HttpStatusCode.CREATED)
 				.send({ statusCode: HttpStatusCode.CREATED, response });
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	findOne = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const {
+				params: { id },
+			} = req;
+
+			const response = await this.service.findOne(id);
+
+			return res
+				.status(HttpStatusCode.OK)
+				.send({ statusCode: HttpStatusCode.OK, response });
 		} catch (e) {
 			next(e);
 		}

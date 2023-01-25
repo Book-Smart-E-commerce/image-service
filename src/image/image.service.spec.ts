@@ -2,6 +2,8 @@ import { ImageService } from '@image/image.service';
 import { jest } from '@jest/globals';
 import { Image } from '@image/interfaces/image.interface';
 import { default as data } from '@test/data/images.json';
+import { HttpException } from '@src/common/utils/HttpException';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 
 const mockRepository = {
 	create: jest.fn(
@@ -36,6 +38,16 @@ describe('ImageService', () => {
 			expect(response).toMatchObject(image);
 			expect(mockRepository.findOne).toBeCalledTimes(1);
 			expect(mockRepository.findOne).toHaveBeenCalledWith(id);
+		});
+
+		it('should return a "not found" error message if the image does not exist', async () => {
+			id = '63d089bdcd33c453c10564j1';
+			await expect(service.findOne(id)).rejects.toThrow(
+				new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				})
+			);
 		});
 	});
 });

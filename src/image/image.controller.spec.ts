@@ -54,6 +54,14 @@ describe('ImageController', () => {
 	});
 
 	describe('create', () => {
+		const image = {
+			name: 'test.png',
+			description: 'Description of image',
+			url: '',
+			size: 11189,
+			key: '724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
+		};
+
 		it('should return an image if the file exists in the request', async () => {
 			const response = await controller.create(
 				mockRequest,
@@ -63,21 +71,12 @@ describe('ImageController', () => {
 
 			expect(response).toBeDefined();
 			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.CREATED);
-			expect(mockService.create).toHaveBeenCalledWith({
-				name: 'test.png',
-				description: 'Description of image',
-				url: '',
-				size: 11189,
-				key: '724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
-			});
+			expect(mockService.create).toHaveBeenCalledWith(image);
 			expect(res.send).toHaveBeenCalledWith({
 				statusCode: HttpStatusCode.CREATED,
 				response: {
+					...image,
 					_id: '63cfde53c12118dcd67b654d',
-					name: 'test.png',
-					description: 'Description of image',
-					size: 11189,
-					key: '724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
 					url: 'http://localhost:4700/img/724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
 					createdAt: '2023-01-24T13:25:19.609Z',
 				},
@@ -98,6 +97,31 @@ describe('ImageController', () => {
 					message: 'Unable to upload file',
 				})
 			);
+		});
+
+		it('should set an empty description if the description in the body is undefined', async () => {
+			const response = await controller.create(
+				{ ...mockRequest, body: {} },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(mockService.create).toHaveBeenCalledWith({
+				...image,
+				description: '',
+			});
+			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.CREATED);
+			expect(res.send).toHaveBeenCalledWith({
+				statusCode: HttpStatusCode.CREATED,
+				response: {
+					...image,
+					description: '',
+					_id: '63cfde53c12118dcd67b654d',
+					url: 'http://localhost:4700/img/724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
+					createdAt: '2023-01-24T13:25:19.609Z',
+				},
+			});
 		});
 	});
 });

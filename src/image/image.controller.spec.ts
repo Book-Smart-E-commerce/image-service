@@ -3,6 +3,7 @@ import { Image } from '@image/interfaces/image.interface';
 import { jest } from '@jest/globals';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { NextFunction, Request, Response } from 'express';
+import { HttpException } from '@src/common/utils/HttpException';
 
 const mockService = {
 	create: jest.fn(
@@ -41,7 +42,7 @@ const mockResponse = () => {
 	return res;
 };
 
-const mockNextFunction: NextFunction = () => {};
+const mockNextFunction: NextFunction = jest.fn();
 
 describe('ImageController', () => {
 	let controller: any;
@@ -81,6 +82,22 @@ describe('ImageController', () => {
 					createdAt: '2023-01-24T13:25:19.609Z',
 				},
 			});
+		});
+
+		it('should return an error message if the file is undefined', async () => {
+			const response = controller.create(
+				{ ...mockRequest, file: undefined },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(mockNextFunction).toHaveBeenCalledWith(
+				new HttpException({
+					statusCode: HttpStatusCode.BAD_REQUEST,
+					message: 'Unable to upload file',
+				})
+			);
 		});
 	});
 });

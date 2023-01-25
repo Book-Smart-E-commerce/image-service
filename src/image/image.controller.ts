@@ -18,10 +18,10 @@ class ImageController {
 			} = req;
 
 			if (!file)
-				throw new HttpException(
-					HttpStatusCode.BAD_REQUEST,
-					'Unable to upload file'
-				);
+				throw new HttpException({
+					statusCode: HttpStatusCode.BAD_REQUEST,
+					message: 'Unable to upload file',
+				});
 
 			const { originalname: name, filename: key, size } = file;
 

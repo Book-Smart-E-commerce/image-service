@@ -4,6 +4,7 @@ import { Image } from '@image/interfaces/image.interface';
 import { default as data } from '@test/data/images.json';
 import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { Service } from '@image/interfaces/imageService.interface';
 
 const mockRepository = {
 	create: jest.fn(
@@ -21,7 +22,7 @@ const mockRepository = {
 };
 
 describe('ImageService', () => {
-	let service: any;
+	let service: Service;
 
 	beforeEach(() => {
 		service = new ImageService(mockRepository);
@@ -33,6 +34,7 @@ describe('ImageService', () => {
 			description: 'test2 de descrição',
 			size: 11189,
 			key: 'e2745bc44f43d4c3f0ac157cf808f900-test2.png',
+			url: '',
 		};
 
 		it('should return the created image', async () => {

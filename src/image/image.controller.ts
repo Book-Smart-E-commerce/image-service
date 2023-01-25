@@ -1,12 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Image, ImageDocument } from '@src/image/interfaces/image.interface';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { HttpException } from '@src/common/utils/HttpException';
-
-interface Service {
-	create(image: Image): Promise<ImageDocument>;
-	findOne(id: string): Promise<ImageDocument>;
-}
+import { Service } from '@image/interfaces/imageService.interface';
 
 class ImageController {
 	constructor(private service: Service) {}

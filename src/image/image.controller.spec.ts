@@ -4,6 +4,7 @@ import { jest } from '@jest/globals';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '@src/common/utils/HttpException';
+import { default as data } from '@src/test/data/images.json';
 
 const mockService = {
 	create: jest.fn(
@@ -14,6 +15,10 @@ const mockService = {
 				url: `http://localhost:4700/img/${image.key}`,
 				createdAt: '2023-01-24T13:25:19.609Z',
 			})
+	),
+	findOne: jest.fn(
+		(id: string): Promise<any> =>
+			Promise.resolve(data.find(image => image._id === id))
 	),
 };
 
@@ -31,6 +36,7 @@ const mockRequest = {
 	body: {
 		description: 'Description of image',
 	},
+	params: {},
 } as Request;
 
 const mockResponse = () => {
@@ -121,6 +127,25 @@ describe('ImageController', () => {
 					url: 'http://localhost:4700/img/724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
 					createdAt: '2023-01-24T13:25:19.609Z',
 				},
+			});
+		});
+	});
+
+	describe('findOne', () => {
+		const id = '63d089bdcd33c453c10568f4';
+		it('should return image if image exists', async () => {
+			const image = data.find(image => image._id === id);
+			const response = await controller.findOne(
+				{ ...mockRequest, params: { id } },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.OK);
+			expect(res.send).toHaveBeenCalledWith({
+				statusCode: HttpStatusCode.OK,
+				response: image,
 			});
 		});
 	});

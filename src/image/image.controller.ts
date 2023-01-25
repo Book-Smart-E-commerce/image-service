@@ -33,7 +33,7 @@ class ImageController {
 				key,
 			});
 
-			res
+			return res
 				.status(HttpStatusCode.CREATED)
 				.send({ statusCode: HttpStatusCode.CREATED, response });
 		} catch (e) {

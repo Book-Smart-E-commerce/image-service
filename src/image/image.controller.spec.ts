@@ -54,8 +54,13 @@ describe('ImageController', () => {
 
 	describe('create', () => {
 		it('should return an image if the file exists in the request', async () => {
-			await controller.create(mockRequest, res, mockNextFunction);
+			const response = await controller.create(
+				mockRequest,
+				res,
+				mockNextFunction
+			);
 
+			expect(response).toBeDefined();
 			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.CREATED);
 			expect(mockService.create).toHaveBeenCalledWith({
 				name: 'test.png',

@@ -1,11 +1,7 @@
 import { Image, ImageDocument } from '@image/interfaces/image.interface';
 import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
-
-interface Repository {
-	create(image: Image): Promise<ImageDocument>;
-	findOne(id: string): Promise<ImageDocument | null>;
-}
+import { Repository } from '@image/interfaces/imageRepository.interface';
 
 export class ImageService {
 	constructor(private repository: Repository) {}

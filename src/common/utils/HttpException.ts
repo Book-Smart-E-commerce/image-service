@@ -1,3 +1,5 @@
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+
 export interface HttpError {
 	message?: string;
 	statusCode?: number;
@@ -6,11 +8,11 @@ export interface HttpError {
 export class HttpException extends Error {
 	public statusCode: number;
 
-	constructor(statusCode: number, message: string) {
+	constructor({ statusCode, message }: HttpError) {
 		super(message);
 		Error.captureStackTrace(this, this.constructor);
 
 		this.name = this.constructor.name;
-		this.statusCode = statusCode;
+		this.statusCode = statusCode ?? HttpStatusCode.INTERNAL_SERVER;
 	}
 }

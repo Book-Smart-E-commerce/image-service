@@ -7,4 +7,8 @@ export class ImageRepository {
 	create = (image: Image): Promise<ImageDocument> => {
 		return new this.model(image).save();
 	};
+
+	findOne = (id: string): Promise<ImageDocument | null> => {
+		return this.model.findOne({ _id: id }).exec();
+	};
 }

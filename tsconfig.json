@@ -17,6 +17,7 @@
       "@controller/*": ["./controllers/*"],
       "@middleware/*": ["./middleware/*"],
       "@config/*": ["./config/*"],
+      "@test/*":["./test/*"],
       "@image/*": ["./image/*"],
 
     }

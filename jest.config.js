@@ -4,6 +4,7 @@ module.exports = {
 	testEnvironment: 'node',
 	moduleNameMapper: {
 		'@config/(.*)': '<rootDir>/src/config/$1',
+		'@test/(.*)': '<rootDir>/src/test/$1',
 		'@image/(.*)': '<rootDir>/src/image/$1',
 		'@src/(.*)': '<rootDir>/src/$1',
 	},

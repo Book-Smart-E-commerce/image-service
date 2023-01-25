@@ -2,9 +2,14 @@ import { ImageController } from '@image/image.controller';
 import { Image } from '@image/interfaces/image.interface';
 import { jest } from '@jest/globals';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
-import { NextFunction, Request, Response } from 'express';
+import { Response } from 'express';
 import { HttpException } from '@src/common/utils/HttpException';
 import { default as data } from '@src/test/data/images.json';
+import {
+	mockRequest,
+	mockNextFunction,
+	mockResponse,
+} from '@test/utils/httpMock.utils';
 
 const mockService = {
 	create: jest.fn(
@@ -27,34 +32,6 @@ const mockService = {
 		return Promise.resolve(image);
 	}),
 };
-
-const mockRequest = {
-	file: {
-		fieldname: 'file',
-		originalname: 'test.png',
-		encoding: '7bit',
-		mimetype: 'image/png',
-		destination: 'rootdir//tcc//image-service//tmp//uploads',
-		filename: '724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
-		path: 'rootdir//tcc//image-service//tmp//uploads//724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
-		size: 11189,
-	},
-	body: {
-		description: 'Description of image',
-	},
-	params: {},
-} as Request;
-
-const mockResponse = () => {
-	let res = {} as unknown as Response;
-
-	res.status = jest.fn(() => res);
-	res.send = jest.fn(() => res);
-
-	return res;
-};
-
-const mockNextFunction: NextFunction = jest.fn();
 
 describe('ImageController', () => {
 	let controller: any;

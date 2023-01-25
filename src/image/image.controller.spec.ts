@@ -16,10 +16,16 @@ const mockService = {
 				createdAt: '2023-01-24T13:25:19.609Z',
 			})
 	),
-	findOne: jest.fn(
-		(id: string): Promise<any> =>
-			Promise.resolve(data.find(image => image._id === id))
-	),
+	findOne: jest.fn((id: string): Promise<any> => {
+		const image = data.find(image => image._id === id);
+		if (!image)
+			throw new HttpException({
+				statusCode: HttpStatusCode.NOT_FOUND,
+				message: `Image ${id} not found`,
+			});
+
+		return Promise.resolve(image);
+	}),
 };
 
 const mockRequest = {
@@ -97,6 +103,8 @@ describe('ImageController', () => {
 			);
 
 			expect(response).toBeDefined();
+			expect(res.status).not.toHaveBeenCalled();
+			expect(res.send).not.toHaveBeenCalled();
 			expect(mockNextFunction).toHaveBeenCalledWith(
 				new HttpException({
 					statusCode: HttpStatusCode.BAD_REQUEST,
@@ -132,7 +140,7 @@ describe('ImageController', () => {
 	});
 
 	describe('findOne', () => {
-		const id = '63d089bdcd33c453c10568f4';
+		let id = '63d089bdcd33c453c10568f4';
 		it('should return image if image exists', async () => {
 			const image = data.find(image => image._id === id);
 			const response = await controller.findOne(
@@ -147,6 +155,26 @@ describe('ImageController', () => {
 				statusCode: HttpStatusCode.OK,
 				response: image,
 			});
+		});
+
+		it('should return a "not found" error message if the image does not exist', async () => {
+			id = '63d089bdcd33c453c10567r5';
+
+			const response = await controller.findOne(
+				{ ...mockRequest, params: { id } },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).not.toBeDefined();
+			expect(res.status).not.toHaveBeenCalled();
+			expect(res.send).not.toHaveBeenCalled();
+			expect(mockNextFunction).toHaveBeenCalledWith(
+				new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				})
+			);
 		});
 	});
 });

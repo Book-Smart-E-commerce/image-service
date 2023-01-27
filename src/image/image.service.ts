@@ -22,4 +22,12 @@ export class ImageService {
 
 		return image;
 	};
+
+	delete = async (id: string): Promise<ImageDocument> => {
+		const image = await this.findOne(id);
+
+		await this.repository.delete(id);
+
+		return image;
+	};
 }

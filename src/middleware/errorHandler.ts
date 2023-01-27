@@ -8,8 +8,15 @@ export const errorHandler = (
 	res: Response,
 	next: NextFunction
 ) => {
+	const errorName = err.name ?? 'HttpExecption';
 	const statusCode = err.statusCode ?? HttpStatusCode.INTERNAL_SERVER;
 	const message = err.message ?? 'Something went wrong';
 
-	return res.status(statusCode).send({ statusCode, error: message });
+	return res
+		.status(statusCode)
+		.send({
+			statusCode,
+			error: { statusCode, error: errorName, message },
+			response: null,
+		});
 };

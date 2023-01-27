@@ -1,6 +1,7 @@
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 
 export interface HttpError {
+	name?: string;
 	message?: string;
 	statusCode?: number;
 }

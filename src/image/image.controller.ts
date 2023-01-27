@@ -52,6 +52,22 @@ class ImageController {
 			next(e);
 		}
 	};
+
+	delete = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const {
+				params: { id },
+			} = req;
+
+			const response = await this.service.delete(id);
+
+			res
+				.status(HttpStatusCode.OK)
+				.send({ statusCode: HttpStatusCode.OK, response });
+		} catch (e) {
+			next(e);
+		}
+	};
 }
 
 export { ImageController };

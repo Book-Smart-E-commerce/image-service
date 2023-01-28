@@ -42,10 +42,25 @@ export class ImageService {
 		return image;
 	};
 
-	find = ({ search, orderBy, sortOrder, page, limit }: Search) => {
+	find = ({
+		search,
+		startDate,
+		endDate,
+		orderBy,
+		sortOrder,
+		page,
+		limit,
+	}: Search) => {
 		let match: FilterQuery<any> = {};
+		let searchDate: FilterQuery<any> = {};
 
 		if (search) match = { ...match, $text: { $search: search } };
+
+		if (startDate) searchDate = { ...searchDate, $gte: new Date(startDate) };
+
+		if (endDate) searchDate = { ...searchDate, $lte: new Date(endDate) };
+
+		if (searchDate) match = { ...match, createdAt: searchDate };
 
 		return this.repository.find({
 			match: match,

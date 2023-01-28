@@ -10,7 +10,6 @@ import { imageController } from '@src/image';
 
 const router = Router();
 
-//@ts-ignore
 const validateParams = validate('params');
 
 router.post('/', upload.single('file'), imageController.create);

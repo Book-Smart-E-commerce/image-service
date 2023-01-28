@@ -5,6 +5,8 @@ import { Repository } from '@image/interfaces/imageRepository.interface';
 import { promisify } from 'util';
 import { unlink } from 'fs';
 import path from 'path';
+import { Search } from '@image/interfaces/search.interface';
+import { FilterQuery } from 'mongoose';
 
 export class ImageService {
 	constructor(private repository: Repository) {}
@@ -38,5 +40,16 @@ export class ImageService {
 		}
 
 		return image;
+	};
+
+	find = ({ orderBy, sortOrder, page, limit }: Search) => {
+		let match: FilterQuery<any> = {};
+
+		return this.repository.find({
+			match: match,
+			sort: { [orderBy]: sortOrder },
+			skip: page * limit,
+			limit,
+		});
 	};
 }

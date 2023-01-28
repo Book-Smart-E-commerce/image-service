@@ -1,4 +1,5 @@
 import { validateOrReject, ValidationError } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
@@ -29,9 +30,7 @@ export const validate =
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			if (req[target]) {
-				const dto = new objDTO();
-
-				Object.assign(dto, req[target]);
+				const dto = plainToInstance(objDTO, req[target]);
 				await validateOrReject(dto);
 
 				next();

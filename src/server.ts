@@ -2,6 +2,7 @@ import { app } from '@src/app';
 import dotenv from 'dotenv';
 import { Express } from 'express';
 import { MongoDb } from '@src/database';
+import 'reflect-metadata';
 
 dotenv.config();
 

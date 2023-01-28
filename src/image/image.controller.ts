@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { HttpException } from '@src/common/utils/HttpException';
 import { Service } from '@image/interfaces/imageService.interface';
+import { SortEnum } from '@src/common/enums/sort.enum';
+import { SearchDto } from '@image/dtos/search.dto';
 
 class ImageController {
 	constructor(private service: Service) {}
@@ -64,6 +66,29 @@ class ImageController {
 			res
 				.status(HttpStatusCode.OK)
 				.send({ statusCode: HttpStatusCode.OK, response });
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	find = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const { search, page, limit, orderBy, sortOrder, endDate, startDate } =
+				req.query as SearchDto;
+
+			const response = await this.service.find({
+				search: search ?? '',
+				endDate: endDate,
+				startDate: startDate,
+				page: page || 0,
+				limit: limit || 10,
+				orderBy: orderBy ?? 'name',
+				sortOrder: sortOrder || SortEnum.ASC,
+			});
+
+			res
+				.status(HttpStatusCode.OK)
+				.send({ statusCode: HttpStatusCode.OK, response: response });
 		} catch (e) {
 			next(e);
 		}

@@ -33,6 +33,8 @@ export const validate =
 				const dto = plainToInstance(objDTO, req[target]);
 				await validateOrReject(dto);
 
+				req[target] = dto;
+
 				next();
 			} else {
 				next(new Error('Target validation is not valid'));

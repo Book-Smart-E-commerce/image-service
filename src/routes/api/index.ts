@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { ParamsDto } from '@src/common/dtos/params.dto';
 
 // middleware
-import { validateRequest } from '@middleware/validate';
+import { validate } from '@middleware/validate';
 import { upload } from '@middleware/multer';
 
 // Controllers
@@ -10,10 +10,11 @@ import { imageController } from '@src/image';
 
 const router = Router();
 
-const validateParams = validateRequest({ paramsDTO: ParamsDto });
+//@ts-ignore
+const validateParams = validate('params');
 
 router.post('/', upload.single('file'), imageController.create);
-router.get('/:id', validateParams, imageController.findOne);
-router.delete('/:id', validateParams, imageController.delete);
+router.get('/:id', validateParams(ParamsDto), imageController.findOne);
+router.delete('/:id', validateParams(ParamsDto), imageController.delete);
 
 export { router };

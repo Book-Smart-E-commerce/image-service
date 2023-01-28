@@ -7,12 +7,6 @@ type ClassConstructor<T> = {
 	new (...args: any[]): T;
 };
 
-interface Validate {
-	paramsDTO?: ClassConstructor<any>;
-	bodyDTO?: ClassConstructor<any>;
-	queryDTO?: ClassConstructor<any>;
-}
-
 const getMessagesError = (err: Array<ValidationError>) => {
 	let messages = [];
 
@@ -27,27 +21,23 @@ const getMessagesError = (err: Array<ValidationError>) => {
 	return messages;
 };
 
-const validate = (object: any) => async (objDTO: ClassConstructor<any>) => {
-	const dto = new objDTO();
+type Target = 'body' | 'query' | 'params';
 
-	Object.assign(dto, object);
-
-	return await validateOrReject(dto);
-};
-
-export const validateRequest =
-	({ paramsDTO, bodyDTO, queryDTO }: Validate) =>
+export const validate =
+	(target: Target = 'body') =>
+	(objDTO: ClassConstructor<any>) =>
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const { params, body, query } = req;
+			if (req[target]) {
+				const dto = new objDTO();
 
-			if (paramsDTO) await validate(params)(paramsDTO);
+				Object.assign(dto, req[target]);
+				await validateOrReject(dto);
 
-			if (queryDTO) await validate(query)(queryDTO);
-
-			if (bodyDTO) await validate(body)(bodyDTO);
-
-			next();
+				next();
+			} else {
+				next(new Error('Target validation is not valid'));
+			}
 		} catch (e) {
 			next(
 				new HttpException({

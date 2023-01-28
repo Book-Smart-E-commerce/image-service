@@ -42,8 +42,10 @@ export class ImageService {
 		return image;
 	};
 
-	find = ({ orderBy, sortOrder, page, limit }: Search) => {
+	find = ({ search, orderBy, sortOrder, page, limit }: Search) => {
 		let match: FilterQuery<any> = {};
+
+		if (search) match = { ...match, $text: { $search: search } };
 
 		return this.repository.find({
 			match: match,

@@ -71,6 +71,8 @@ class ImageController {
 		}
 	};
 
+	//TODO: Add function to transform ids property value into array
+	//TODO: Add function to transform keys property value into array
 	find = async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const { search, page, limit, orderBy, sortOrder, endDate, startDate } =
@@ -78,8 +80,8 @@ class ImageController {
 
 			const response = await this.service.find({
 				search: search ?? '',
-				endDate: endDate,
-				startDate: startDate,
+				endDate,
+				startDate,
 				page: page || 0,
 				limit: limit || 10,
 				orderBy: orderBy ?? 'name',

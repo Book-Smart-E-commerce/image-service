@@ -44,6 +44,7 @@ export class ImageService {
 
 	find = ({
 		ids,
+		keys,
 		search,
 		startDate,
 		endDate,
@@ -60,6 +61,8 @@ export class ImageService {
 
 		if (ids)
 			match = { ...match, _id: { $in: ids.map(id => new Types.ObjectId(id)) } };
+
+		if (keys) match = { ...match, key: { $in: keys } };
 
 		if (startDate) searchDate = { ...searchDate, $gte: new Date(startDate) };
 

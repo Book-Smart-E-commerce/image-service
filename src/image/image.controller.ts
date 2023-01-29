@@ -83,10 +83,12 @@ class ImageController {
 				endDate,
 				startDate,
 				ids,
+				keys,
 			} = req.query as SearchDto;
 
 			const response = await this.service.find({
 				ids,
+				keys,
 				search: search ?? '',
 				endDate,
 				startDate,

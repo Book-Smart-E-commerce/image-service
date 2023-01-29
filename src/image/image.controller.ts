@@ -80,7 +80,7 @@ class ImageController {
 
 			const response = await this.service.update(id, { name, description });
 
-			res
+			return res
 				.status(HttpStatusCode.OK)
 				.send({ statusCode: HttpStatusCode.OK, response });
 		} catch (e) {

@@ -10,6 +10,7 @@ import {
 	mockNextFunction,
 	mockResponse,
 } from '@test/utils/httpMock.utils';
+import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 
 const mockService = {
 	create: jest.fn(
@@ -31,7 +32,13 @@ const mockService = {
 
 		return Promise.resolve(image);
 	}),
-	update: jest.fn((): Promise<any> => Promise.resolve({})),
+	update: jest.fn((id: string, input: UpdateImageDto): Promise<any> => {
+		const image = data.find(e => e._id === id);
+
+		if (image) Object.assign(image, input);
+
+		return Promise.resolve(image);
+	}),
 	find: jest.fn((): Promise<any> => Promise.resolve([])),
 	delete: jest.fn(
 		(id: string): Promise<any> => Promise.resolve(data.find(e => e._id === id))
@@ -202,6 +209,32 @@ describe('ImageController', () => {
 					message: `Image ${id} not found`,
 				})
 			);
+		});
+	});
+
+	describe('update', () => {
+		const id = '63d089bdcd33c453c10568f4';
+		it('should return the updated image', async () => {
+			const body = { name: 'updated Test', description: 'updated Test' };
+
+			const response = await controller.update(
+				{
+					...mockRequest,
+					params: { id: id },
+					body: body,
+				},
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(mockService.update).toBeCalledWith(id, body);
+			expect(mockService.update).toBeCalledTimes(1);
+			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
+			expect(res.send).toBeCalledWith({
+				statusCode: HttpStatusCode.OK,
+				response: { ...data[0], ...body },
+			});
 		});
 	});
 });

@@ -214,9 +214,8 @@ describe('ImageController', () => {
 
 	describe('update', () => {
 		const id = '63d089bdcd33c453c10568f4';
+		const body = { name: 'updated Test', description: 'updated Test' };
 		it('should return the updated image', async () => {
-			const body = { name: 'updated Test', description: 'updated Test' };
-
 			const response = await controller.update(
 				{
 					...mockRequest,
@@ -235,6 +234,31 @@ describe('ImageController', () => {
 				statusCode: HttpStatusCode.OK,
 				response: { ...data[0], ...body },
 			});
+		});
+
+		it('should call next function if any error occurs', async () => {
+			jest.spyOn(mockService, 'update').mockImplementation(() => {
+				throw new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				});
+			});
+
+			const response = await controller.update(
+				{ ...mockRequest, params: { id: id }, body: body },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).not.toBeDefined();
+			expect(res.status).not.toHaveBeenCalled();
+			expect(res.send).not.toHaveBeenCalled();
+			expect(mockNextFunction).toHaveBeenCalledWith(
+				new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				})
+			);
 		});
 	});
 });

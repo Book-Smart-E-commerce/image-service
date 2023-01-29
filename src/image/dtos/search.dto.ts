@@ -19,7 +19,7 @@ export class SearchDto {
 
 		return value;
 	})
-	ids?: string;
+	ids?: Array<string>;
 
 	@IsString({ each: true })
 	@Transform(({ value }) => {
@@ -28,7 +28,7 @@ export class SearchDto {
 		return value;
 	})
 	@IsOptional()
-	keys?: string;
+	keys?: Array<string>;
 
 	@IsString()
 	@IsOptional()

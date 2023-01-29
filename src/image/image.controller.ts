@@ -71,14 +71,22 @@ class ImageController {
 		}
 	};
 
-	//TODO: Add function to transform ids property value into array
 	//TODO: Add function to transform keys property value into array
 	find = async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const { search, page, limit, orderBy, sortOrder, endDate, startDate } =
-				req.query as SearchDto;
+			const {
+				search,
+				page,
+				limit,
+				orderBy,
+				sortOrder,
+				endDate,
+				startDate,
+				ids,
+			} = req.query as SearchDto;
 
 			const response = await this.service.find({
+				ids,
 				search: search ?? '',
 				endDate,
 				startDate,

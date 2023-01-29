@@ -71,6 +71,23 @@ class ImageController {
 		}
 	};
 
+	update = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const {
+				params: { id },
+				body: { name, description },
+			} = req;
+
+			const response = await this.service.update(id, { name, description });
+
+			res
+				.status(HttpStatusCode.OK)
+				.send({ statusCode: HttpStatusCode.OK, response });
+		} catch (e) {
+			next(e);
+		}
+	};
+
 	find = async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const {

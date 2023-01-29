@@ -161,8 +161,8 @@ describe('ImageController', () => {
 	});
 
 	describe('delete', () => {
+		const id = '63d089bdcd33c453c10568f4';
 		it('should return the deleted image', async () => {
-			const id = '63d089bdcd33c453c10568f4';
 			const response = await controller.delete(
 				{ ...mockRequest, params: { id: id } },
 				res,
@@ -177,6 +177,31 @@ describe('ImageController', () => {
 				statusCode: HttpStatusCode.OK,
 				response: data[0],
 			});
+		});
+
+		it('should call next function if any error occurs', async () => {
+			jest.spyOn(mockService, 'delete').mockImplementation(() => {
+				throw new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				});
+			});
+
+			const response = await controller.delete(
+				{ ...mockRequest, params: { id: id } },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).not.toBeDefined();
+			expect(res.status).not.toHaveBeenCalled();
+			expect(res.send).not.toHaveBeenCalled();
+			expect(mockNextFunction).toHaveBeenCalledWith(
+				new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				})
+			);
 		});
 	});
 });

@@ -33,4 +33,8 @@ export class ImageRepository {
 			])
 			.exec();
 	};
+
+	update = (id: string, image: ImageDocument) => {
+		return this.model.updateOne({ _id: id }, image).exec();
+	};
 }

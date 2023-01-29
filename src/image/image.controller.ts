@@ -71,7 +71,6 @@ class ImageController {
 		}
 	};
 
-	//TODO: Add function to transform keys property value into array
 	find = async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const {

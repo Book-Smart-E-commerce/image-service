@@ -7,6 +7,7 @@ import { unlink } from 'fs';
 import path from 'path';
 import { Search } from '@image/interfaces/search.interface';
 import { FilterQuery, Types } from 'mongoose';
+import { SortEnum } from '@src/common/enums/sort.enum';
 
 export class ImageService {
 	constructor(private repository: Repository) {}
@@ -48,10 +49,10 @@ export class ImageService {
 		search,
 		startDate,
 		endDate,
-		orderBy,
-		sortOrder,
-		page,
-		limit,
+		orderBy = 'name',
+		sortOrder = SortEnum.ASC,
+		page = 0,
+		limit = 10,
 	}: Search) => {
 		let match: FilterQuery<any> = {};
 		let searchDate: FilterQuery<any> = {};

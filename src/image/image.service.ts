@@ -6,7 +6,7 @@ import { promisify } from 'util';
 import { unlink } from 'fs';
 import path from 'path';
 import { Search } from '@image/interfaces/search.interface';
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, Types } from 'mongoose';
 
 export class ImageService {
 	constructor(private repository: Repository) {}
@@ -43,6 +43,7 @@ export class ImageService {
 	};
 
 	find = ({
+		ids,
 		search,
 		startDate,
 		endDate,
@@ -56,6 +57,9 @@ export class ImageService {
 
 		if (search)
 			match = { ...match, $text: { $search: search, $caseSensitive: true } };
+
+		if (ids)
+			match = { ...match, _id: { $in: ids.map(id => new Types.ObjectId(id)) } };
 
 		if (startDate) searchDate = { ...searchDate, $gte: new Date(startDate) };
 

@@ -2,19 +2,31 @@ import {
 	IsEnum,
 	IsIn,
 	IsISO8601,
+	IsMongoId,
 	IsNumber,
 	IsOptional,
 	IsString,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { SortEnum } from '@src/common/enums/sort.enum';
+import { formatQueryToArray } from '@src/common/utils/query.utils';
 
 export class SearchDto {
-	@IsString()
 	@IsOptional()
+	@IsMongoId({ each: true })
+	@Transform(({ value }) => {
+		if (value) return formatQueryToArray(value);
+
+		return value;
+	})
 	ids?: string;
 
-	@IsString()
+	@IsString({ each: true })
+	@Transform(({ value }) => {
+		if (value) return formatQueryToArray(value);
+
+		return value;
+	})
 	@IsOptional()
 	keys?: string;
 

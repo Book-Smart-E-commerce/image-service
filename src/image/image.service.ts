@@ -8,6 +8,7 @@ import path from 'path';
 import { Search } from '@image/interfaces/search.interface';
 import { FilterQuery, Types } from 'mongoose';
 import { SortEnum } from '@src/common/enums/sort.enum';
+import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 
 export class ImageService {
 	constructor(private repository: Repository) {}
@@ -39,6 +40,16 @@ export class ImageService {
 				path.join(__dirname, '..', '..', 'tmp', 'uploads', image.key)
 			);
 		}
+
+		return image;
+	};
+
+	update = async (id: string, { name, description }: UpdateImageDto) => {
+		const image = await this.findOne(id);
+
+		Object.assign(image, { name, description });
+
+		await this.repository.update(id, image);
 
 		return image;
 	};

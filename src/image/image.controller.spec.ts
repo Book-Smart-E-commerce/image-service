@@ -31,6 +31,11 @@ const mockService = {
 
 		return Promise.resolve(image);
 	}),
+	update: jest.fn((): Promise<any> => Promise.resolve({})),
+	find: jest.fn((): Promise<any> => Promise.resolve([])),
+	delete: jest.fn(
+		(id: string): Promise<any> => Promise.resolve(data.find(e => e._id === id))
+	),
 };
 
 describe('ImageController', () => {
@@ -152,6 +157,26 @@ describe('ImageController', () => {
 					message: `Image ${id} not found`,
 				})
 			);
+		});
+	});
+
+	describe('delete', () => {
+		it('should return the deleted image', async () => {
+			const id = '63d089bdcd33c453c10568f4';
+			const response = await controller.delete(
+				{ ...mockRequest, params: { id: id } },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(mockService.delete).toBeCalledWith(id);
+			expect(mockService.delete).toBeCalledTimes(1);
+			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
+			expect(res.send).toBeCalledWith({
+				statusCode: HttpStatusCode.OK,
+				response: data[0],
+			});
 		});
 	});
 });

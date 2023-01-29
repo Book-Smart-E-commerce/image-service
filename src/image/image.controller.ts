@@ -63,7 +63,7 @@ class ImageController {
 
 			const response = await this.service.delete(id);
 
-			res
+			return res
 				.status(HttpStatusCode.OK)
 				.send({ statusCode: HttpStatusCode.OK, response });
 		} catch (e) {

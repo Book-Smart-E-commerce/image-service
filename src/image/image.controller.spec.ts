@@ -293,5 +293,35 @@ describe('ImageController', () => {
 				response: [],
 			});
 		});
+
+		it('should call the "find" service with the values informed in the request', async () => {
+			jest.spyOn(mockService, 'find').mockClear();
+
+			const input = {
+				page: 1,
+				limit: 2,
+				orderBy: 'description',
+				sortOrder: SortEnum.DESC,
+				search: 'image',
+				endDate: '2023-01-24T13:47:05.007+00:00',
+				startDate: '2023-01-20T13:47:05.007+00:00',
+				keys: ['e2745bc44f43d4c3f0ac157cf808f900-teste1.png'],
+				ids: ['63d089bdcd33c453c10568f4'],
+			};
+			const response = await controller.find(
+				{ ...mockRequest, query: input },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(mockService.find).toBeCalledWith(input);
+			expect(mockService.find).toBeCalledTimes(1);
+			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
+			expect(res.send).toBeCalledWith({
+				statusCode: HttpStatusCode.OK,
+				response: [],
+			});
+		});
 	});
 });

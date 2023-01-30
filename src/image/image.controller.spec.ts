@@ -53,6 +53,7 @@ describe('ImageController', () => {
 	beforeEach(() => {
 		controller = new ImageController(mockService);
 		res = mockResponse();
+		jest.clearAllMocks();
 	});
 
 	describe('create', () => {
@@ -295,8 +296,6 @@ describe('ImageController', () => {
 		});
 
 		it('should call the "find" service with the values informed in the request', async () => {
-			jest.spyOn(mockService, 'find').mockClear();
-
 			const input = {
 				page: 1,
 				limit: 2,
@@ -322,6 +321,29 @@ describe('ImageController', () => {
 				statusCode: HttpStatusCode.OK,
 				response: [],
 			});
+		});
+
+		it('should call next function if any error occurs', async () => {
+			jest
+				.spyOn(mockService, 'find')
+				.mockClear()
+				.mockImplementation(() => {
+					throw new Error('Something went wrong');
+				});
+
+			const response = await controller.find(
+				{ ...mockRequest, query: {} },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).not.toBeDefined();
+			expect(mockService.find).toBeCalledTimes(1);
+			expect(res.status).not.toHaveBeenCalled();
+			expect(res.send).not.toHaveBeenCalled();
+			expect(mockNextFunction).toHaveBeenCalledWith(
+				new Error('Something went wrong')
+			);
 		});
 	});
 });

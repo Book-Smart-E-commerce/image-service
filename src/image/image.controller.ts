@@ -114,7 +114,7 @@ class ImageController {
 				sortOrder: sortOrder || SortEnum.ASC,
 			});
 
-			res
+			return res
 				.status(HttpStatusCode.OK)
 				.send({ statusCode: HttpStatusCode.OK, response: response });
 		} catch (e) {

@@ -11,6 +11,7 @@ import {
 	mockResponse,
 } from '@test/utils/httpMock.utils';
 import { UpdateImageDto } from '@image/dtos/updateImage.dto';
+import { SortEnum } from '@src/common/enums/sort.enum';
 
 const mockService = {
 	create: jest.fn(
@@ -259,6 +260,38 @@ describe('ImageController', () => {
 					message: `Image ${id} not found`,
 				})
 			);
+		});
+	});
+
+	describe('find', () => {
+		const query = {
+			endDate: undefined,
+			ids: undefined,
+			keys: undefined,
+			startDate: undefined,
+		};
+		let defaultSearch = {
+			search: '',
+			page: 0,
+			limit: 10,
+			orderBy: 'name',
+			sortOrder: SortEnum.ASC,
+		};
+		it('should call "find" service with default values in page, limit, orderBy and sortBy if they are undefined', async () => {
+			const response = await controller.find(
+				{ ...mockRequest, query: query },
+				res,
+				mockNextFunction
+			);
+
+			expect(response).toBeDefined();
+			expect(mockService.find).toBeCalledTimes(1);
+			expect(mockService.find).toBeCalledWith({ ...defaultSearch, ...query });
+			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
+			expect(res.send).toBeCalledWith({
+				statusCode: HttpStatusCode.OK,
+				response: [],
+			});
 		});
 	});
 });

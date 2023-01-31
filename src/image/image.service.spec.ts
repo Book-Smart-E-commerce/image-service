@@ -33,6 +33,7 @@ describe('ImageService', () => {
 
 	beforeEach(() => {
 		service = new ImageService(mockRepository);
+		jest.clearAllMocks();
 	});
 
 	describe('create', () => {
@@ -86,6 +87,21 @@ describe('ImageService', () => {
 	describe('update', () => {
 		let id = '63d089bdcd33c453c10568f4';
 		let input = { name: 'updated Image', description: 'updated Image' };
+
+		it('should return the updated Image', async () => {
+			const image = data.find(e => e._id === id);
+			const response = await service.update(id, input);
+
+			expect(response).toBeDefined();
+			expect(response).toMatchObject({ ...image, ...input });
+			expect(mockRepository.findOne).toBeCalledTimes(1);
+			expect(mockRepository.update).toBeCalledTimes(1);
+			expect(mockRepository.update).toHaveBeenCalledWith(id, {
+				...image,
+				...input,
+			});
+		});
+
 		it('should return a "not found" error message if the image does not exist', async () => {
 			id = '63d089bdcd33c453c10564j1';
 

@@ -19,6 +19,13 @@ const mockRepository = {
 	findOne: jest.fn((id: string): Promise<any> => {
 		return Promise.resolve(data.find(image => image._id === id));
 	}),
+	update: jest.fn((id: string, image: Image): Promise<any> => {
+		return Promise.resolve(image);
+	}),
+	find: jest.fn((): Promise<any> => Promise.resolve([])),
+	delete: jest.fn(
+		(id: string): Promise<any> => Promise.resolve(data.find(e => e._id === id))
+	),
 };
 
 describe('ImageService', () => {
@@ -68,6 +75,21 @@ describe('ImageService', () => {
 		it('should return a "not found" error message if the image does not exist', async () => {
 			id = '63d089bdcd33c453c10564j1';
 			await expect(service.findOne(id)).rejects.toThrow(
+				new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				})
+			);
+		});
+	});
+
+	describe('update', () => {
+		let id = '63d089bdcd33c453c10568f4';
+		let input = { name: 'updated Image', description: 'updated Image' };
+		it('should return a "not found" error message if the image does not exist', async () => {
+			id = '63d089bdcd33c453c10564j1';
+
+			await expect(service.update(id, input)).rejects.toThrow(
 				new HttpException({
 					statusCode: HttpStatusCode.NOT_FOUND,
 					message: `Image ${id} not found`,

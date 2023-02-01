@@ -2,8 +2,7 @@ import { Image, ImageDocument } from '@image/interfaces/image.interface';
 import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { Repository } from '@image/interfaces/imageRepository.interface';
-import { promisify } from 'util';
-import { unlink } from 'fs';
+import { unlinkSync } from 'fs';
 import path from 'path';
 import { Search } from '@image/interfaces/search.interface';
 import { FilterQuery, Types } from 'mongoose';
@@ -36,9 +35,7 @@ export class ImageService {
 		const { deletedCount } = await this.repository.delete(id);
 
 		if (deletedCount > 0) {
-			await promisify(unlink)(
-				path.join(__dirname, '..', '..', 'tmp', 'uploads', image.key)
-			);
+			unlinkSync(path.join(__dirname, '..', '..', 'tmp', 'uploads', image.key));
 		}
 
 		return image;

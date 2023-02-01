@@ -117,4 +117,19 @@ describe('ImageService', () => {
 			);
 		});
 	});
+
+	describe('delete', () => {
+		let id = '63d089bdcd33c453c10568f4';
+
+		it('should return a "not found" error message if the image does not exist', async () => {
+			id = '63d089bdcd33c453c10564j1';
+
+			await expect(service.delete(id)).rejects.toThrow(
+				new HttpException({
+					statusCode: HttpStatusCode.NOT_FOUND,
+					message: `Image ${id} not found`,
+				})
+			);
+		});
+	});
 });

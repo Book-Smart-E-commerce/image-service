@@ -6,6 +6,10 @@ import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { Service } from '@image/interfaces/imageService.interface';
 import { UpdateImageDto } from '@image/dtos/updateImage.dto';
+import path from 'path';
+import * as fs from 'fs';
+
+jest.mock('fs');
 
 const mockRepository = {
 	create: jest.fn(
@@ -120,6 +124,24 @@ describe('ImageService', () => {
 
 	describe('delete', () => {
 		let id = '63d089bdcd33c453c10568f4';
+
+		it('should delete image file if image is deleted in database', async () => {
+			jest
+				.spyOn(mockRepository, 'delete')
+				.mockResolvedValue({ acknowledged: false, deletedCount: 1 });
+
+			const image = data.find(e => e._id === id);
+			const response = await service.delete(id);
+
+			expect(response).toBeDefined();
+			expect(response).toMatchObject(image ?? {});
+			expect(mockRepository.delete).toBeCalledTimes(1);
+			expect(mockRepository.delete).toHaveBeenCalledWith(id);
+			expect(fs.unlinkSync).toBeCalledTimes(1);
+			expect(fs.unlinkSync).toHaveBeenCalledWith(
+				path.join(__dirname, '..', '..', 'tmp', 'uploads', image?.key ?? '')
+			);
+		});
 
 		it('should return a "not found" error message if the image does not exist', async () => {
 			id = '63d089bdcd33c453c10564j1';

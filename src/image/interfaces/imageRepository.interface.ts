@@ -1,6 +1,7 @@
 import { Image, ImageDocument } from '@image/interfaces/image.interface';
 import { DeleteResult, UpdateResult } from 'mongodb';
 import { FilterQuery } from 'mongoose';
+import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 
 export interface searchOptions {
 	match: FilterQuery<any>;
@@ -16,5 +17,5 @@ export interface Repository {
 	findOne(id: string): Promise<ImageDocument | null>;
 	find(filter: searchOptions): Promise<Array<ImageDocument>>;
 	delete(id: string): Promise<DeleteResult>;
-	update(id: string, image: ImageDocument): Promise<UpdateResult>;
+	update(id: string, input: UpdateImageDto): Promise<UpdateResult>;
 }

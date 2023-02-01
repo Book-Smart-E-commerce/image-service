@@ -1,7 +1,8 @@
 import { Image, ImageDocument } from '@image/interfaces/image.interface';
 import { Model } from 'mongoose';
-import { DeleteResult } from 'mongodb';
+import { DeleteResult, UpdateResult } from 'mongodb';
 import { searchOptions } from '@image/interfaces/imageRepository.interface';
+import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 
 export class ImageRepository {
 	constructor(private model: Model<ImageDocument>) {}
@@ -34,7 +35,15 @@ export class ImageRepository {
 			.exec();
 	};
 
-	update = (id: string, image: ImageDocument) => {
-		return this.model.updateOne({ _id: id }, image).exec();
+	update = (
+		id: string,
+		{ name, description }: UpdateImageDto
+	): Promise<UpdateResult> => {
+		return this.model
+			.updateOne(
+				{ _id: id },
+				{ $set: { name: name, description: description } }
+			)
+			.exec();
 	};
 }

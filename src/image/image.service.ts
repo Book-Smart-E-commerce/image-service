@@ -17,7 +17,7 @@ export class ImageService {
 		return this.repository.create(image);
 	};
 
-	findOne = async (id: string) => {
+	findOne = async (id: string): Promise<ImageDocument> => {
 		const image = await this.repository.findOne(id);
 
 		if (!image) {
@@ -44,12 +44,15 @@ export class ImageService {
 		return image;
 	};
 
-	update = async (id: string, { name, description }: UpdateImageDto) => {
+	update = async (
+		id: string,
+		{ name, description }: UpdateImageDto
+	): Promise<ImageDocument> => {
 		const image = await this.findOne(id);
 
-		Object.assign(image, { name, description });
+		await this.repository.update(id, { name, description });
 
-		await this.repository.update(id, image);
+		Object.assign(image, { name, description });
 
 		return image;
 	};
@@ -64,7 +67,7 @@ export class ImageService {
 		sortOrder = SortEnum.ASC,
 		page = 0,
 		limit = 10,
-	}: Search) => {
+	}: Search): Promise<Array<ImageDocument>> => {
 		let match: FilterQuery<any> = {};
 		let searchDate: FilterQuery<any> = {};
 

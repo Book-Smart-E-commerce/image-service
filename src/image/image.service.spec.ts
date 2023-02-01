@@ -5,6 +5,7 @@ import { default as data } from '@test/data/images.json';
 import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { Service } from '@image/interfaces/imageService.interface';
+import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 
 const mockRepository = {
 	create: jest.fn(
@@ -19,9 +20,15 @@ const mockRepository = {
 	findOne: jest.fn((id: string): Promise<any> => {
 		return Promise.resolve(data.find(image => image._id === id));
 	}),
-	update: jest.fn((id: string, image: Image): Promise<any> => {
-		return Promise.resolve(image);
-	}),
+	update: jest.fn(
+		(id: string, { name, description }: UpdateImageDto): Promise<any> => {
+			const image = data.find(e => e._id === id);
+
+			if (image) Object.assign(image, { name, description });
+
+			return Promise.resolve(image);
+		}
+	),
 	find: jest.fn((): Promise<any> => Promise.resolve([])),
 	delete: jest.fn(
 		(id: string): Promise<any> => Promise.resolve(data.find(e => e._id === id))
@@ -96,10 +103,7 @@ describe('ImageService', () => {
 			expect(response).toMatchObject({ ...image, ...input });
 			expect(mockRepository.findOne).toBeCalledTimes(1);
 			expect(mockRepository.update).toBeCalledTimes(1);
-			expect(mockRepository.update).toHaveBeenCalledWith(id, {
-				...image,
-				...input,
-			});
+			expect(mockRepository.update).toHaveBeenCalledWith(id, input);
 		});
 
 		it('should return a "not found" error message if the image does not exist', async () => {

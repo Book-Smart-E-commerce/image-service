@@ -3,7 +3,7 @@ import { SortEnum } from '@src/common/enums/sort.enum';
 export interface Search {
 	ids?: Array<string>;
 	keys?: Array<string>;
-	search: string;
+	search?: string;
 	startDate?: string;
 	endDate?: string;
 	sortOrder: SortEnum;

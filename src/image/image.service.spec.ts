@@ -9,6 +9,7 @@ import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 import path from 'path';
 import * as fs from 'fs';
 import { SortEnum } from '@src/common/enums/sort.enum';
+import { Types } from 'mongoose';
 
 jest.mock('fs');
 
@@ -189,6 +190,26 @@ describe('ImageService', () => {
 			expect(mockRepository.find).toHaveBeenCalledWith({
 				match: {
 					$text: { $search: defaultSearch.search, $caseSensitive: true },
+				},
+				sort: { [defaultSearch.orderBy]: defaultSearch.sortOrder },
+				skip: defaultSearch.page * defaultSearch.limit,
+				limit: defaultSearch.limit,
+			});
+		});
+
+		it('should call repository "find" with ids', async () => {
+			const ids = ['63d089bdcd33c453c10568f4', '63d089bdcd33c453c10568f8'];
+			const response = await service.find({
+				...defaultSearch,
+				search: undefined,
+				ids,
+			});
+
+			expect(response).toBeDefined();
+			expect(mockRepository.find).toBeCalledTimes(1);
+			expect(mockRepository.find).toHaveBeenCalledWith({
+				match: {
+					_id: { $in: ids.map(id => new Types.ObjectId(id)) },
 				},
 				sort: { [defaultSearch.orderBy]: defaultSearch.sortOrder },
 				skip: defaultSearch.page * defaultSearch.limit,

@@ -197,7 +197,7 @@ describe('ImageService', () => {
 			});
 		});
 
-		it('should call repository "find" with ids', async () => {
+		it('should perform the search based on the ids', async () => {
 			const ids = ['63d089bdcd33c453c10568f4', '63d089bdcd33c453c10568f8'];
 			const response = await service.find({
 				...defaultSearch,
@@ -210,6 +210,29 @@ describe('ImageService', () => {
 			expect(mockRepository.find).toHaveBeenCalledWith({
 				match: {
 					_id: { $in: ids.map(id => new Types.ObjectId(id)) },
+				},
+				sort: { [defaultSearch.orderBy]: defaultSearch.sortOrder },
+				skip: defaultSearch.page * defaultSearch.limit,
+				limit: defaultSearch.limit,
+			});
+		});
+
+		it('should perform the search based on the keys', async () => {
+			const keys = [
+				'e2745bc44f43d4c3f0ac157cf808f900-teste1.png',
+				'e2745bc44f43d4c3f0ac157cf808f900-teste2.png',
+			];
+			const response = await service.find({
+				...defaultSearch,
+				search: undefined,
+				keys,
+			});
+
+			expect(response).toBeDefined();
+			expect(mockRepository.find).toBeCalledTimes(1);
+			expect(mockRepository.find).toHaveBeenCalledWith({
+				match: {
+					key: { $in: keys },
 				},
 				sort: { [defaultSearch.orderBy]: defaultSearch.sortOrder },
 				skip: defaultSearch.page * defaultSearch.limit,

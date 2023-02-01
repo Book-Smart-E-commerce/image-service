@@ -259,5 +259,25 @@ describe('ImageService', () => {
 				limit: defaultSearch.limit,
 			});
 		});
+
+		it('should perform the search based on the end Date', async () => {
+			const endDate = '2023-02-10T01:03:06.473Z';
+			const response = await service.find({
+				...defaultSearch,
+				search: undefined,
+				endDate,
+			});
+
+			expect(response).toBeDefined();
+			expect(mockRepository.find).toBeCalledTimes(1);
+			expect(mockRepository.find).toHaveBeenCalledWith({
+				match: {
+					createdAt: { $lte: new Date(endDate) },
+				},
+				sort: { [defaultSearch.orderBy]: defaultSearch.sortOrder },
+				skip: defaultSearch.page * defaultSearch.limit,
+				limit: defaultSearch.limit,
+			});
+		});
 	});
 });

@@ -8,6 +8,7 @@ import { Service } from '@image/interfaces/imageService.interface';
 import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 import path from 'path';
 import * as fs from 'fs';
+import { SortEnum } from '@src/common/enums/sort.enum';
 
 jest.mock('fs');
 
@@ -168,6 +169,31 @@ describe('ImageService', () => {
 					message: `Image ${id} not found`,
 				})
 			);
+		});
+	});
+
+	describe('find', () => {
+		const defaultSearch = {
+			search: 'text',
+			orderBy: 'name',
+			sortOrder: SortEnum.ASC,
+			page: 0,
+			limit: 10,
+		};
+
+		it('should call repository "find" with text search info', async () => {
+			const response = await service.find(defaultSearch);
+
+			expect(response).toBeDefined();
+			expect(mockRepository.find).toBeCalledTimes(1);
+			expect(mockRepository.find).toHaveBeenCalledWith({
+				match: {
+					$text: { $search: defaultSearch.search, $caseSensitive: true },
+				},
+				sort: { [defaultSearch.orderBy]: defaultSearch.sortOrder },
+				skip: defaultSearch.page * defaultSearch.limit,
+				limit: defaultSearch.limit,
+			});
 		});
 	});
 });

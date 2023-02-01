@@ -143,6 +143,22 @@ describe('ImageService', () => {
 			);
 		});
 
+		it('should not delete image file if image is not deleted in database', async () => {
+			const image = data.find(e => e._id === id);
+			jest
+				.spyOn(mockRepository, 'delete')
+				.mockResolvedValue({ acknowledged: false, deletedCount: 0 });
+
+			const response = await service.delete(id);
+
+			expect(response).toBeDefined();
+			expect(response).toMatchObject(image ?? {});
+			expect(mockRepository.delete).toBeCalledTimes(1);
+			expect(mockRepository.delete).toHaveBeenCalledWith(id);
+			expect(fs.unlinkSync).toBeCalledTimes(0);
+			expect(fs.unlinkSync).not.toHaveBeenCalled();
+		});
+
 		it('should return a "not found" error message if the image does not exist', async () => {
 			id = '63d089bdcd33c453c10564j1';
 

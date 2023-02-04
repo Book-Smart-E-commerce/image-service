@@ -2,20 +2,30 @@ import { Image, ImageDocument } from '@image/interfaces/image.interface';
 import { HttpException } from '@src/common/utils/HttpException';
 import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
 import { Repository } from '@image/interfaces/imageRepository.interface';
-import { unlinkSync } from 'fs';
-import path from 'path';
 import { Search } from '@image/interfaces/search.interface';
 import { FilterQuery, Types } from 'mongoose';
 import { SortEnum } from '@src/common/enums/sort.enum';
 import { UpdateImageDto } from '@image/dtos/updateImage.dto';
+import { unlinkSync } from 'fs';
+import path from 'path';
 
 export class ImageService {
 	constructor(private repository: Repository) {}
 
+	/**
+	 * Create an image
+	 * @param image Image file information
+	 * @return The created image document
+	 */
 	create = (image: Image): Promise<ImageDocument> => {
 		return this.repository.create(image);
 	};
 
+	/**
+	 * Find One Image
+	 * @param id - The unique id of the image
+	 * @return The image found
+	 */
 	findOne = async (id: string): Promise<ImageDocument> => {
 		const image = await this.repository.findOne(id);
 
@@ -29,6 +39,11 @@ export class ImageService {
 		return image;
 	};
 
+	/**
+	 * Delete an image
+	 * @param id - The unique id of the image
+	 * @return The deleted image
+	 */
 	delete = async (id: string): Promise<ImageDocument> => {
 		const image = await this.findOne(id);
 
@@ -41,6 +56,14 @@ export class ImageService {
 		return image;
 	};
 
+	/**
+	 * Update an image
+	 * @param id - The unique id of the image
+	 * @param input - Updated image data
+	 * @param input.name - The name of the image
+	 * @param input.description - The description of the image
+	 * @return The updated image
+	 */
 	update = async (
 		id: string,
 		{ name, description }: UpdateImageDto
@@ -54,6 +77,11 @@ export class ImageService {
 		return image;
 	};
 
+	/**
+	 * Find images
+	 * @param searchOption - Image search options
+	 * @return The images found
+	 */
 	find = ({
 		ids,
 		keys,

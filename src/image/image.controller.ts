@@ -31,9 +31,11 @@ class ImageController {
 				key,
 			});
 
-			return res
-				.status(HttpStatusCode.CREATED)
-				.send({ statusCode: HttpStatusCode.CREATED, response });
+			return res.status(HttpStatusCode.CREATED).send({
+				statusCode: HttpStatusCode.CREATED,
+				error: null,
+				data: response,
+			});
 		} catch (e) {
 			next(e);
 		}
@@ -49,7 +51,7 @@ class ImageController {
 
 			return res
 				.status(HttpStatusCode.OK)
-				.send({ statusCode: HttpStatusCode.OK, response });
+				.send({ statusCode: HttpStatusCode.OK, error: null, data: response });
 		} catch (e) {
 			next(e);
 		}
@@ -65,7 +67,7 @@ class ImageController {
 
 			return res
 				.status(HttpStatusCode.OK)
-				.send({ statusCode: HttpStatusCode.OK, response });
+				.send({ statusCode: HttpStatusCode.OK, error: null, data: response });
 		} catch (e) {
 			next(e);
 		}
@@ -82,7 +84,7 @@ class ImageController {
 
 			return res
 				.status(HttpStatusCode.OK)
-				.send({ statusCode: HttpStatusCode.OK, response });
+				.send({ statusCode: HttpStatusCode.OK, error: null, data: response });
 		} catch (e) {
 			next(e);
 		}
@@ -114,9 +116,11 @@ class ImageController {
 				sortOrder: sortOrder || SortEnum.ASC,
 			});
 
-			return res
-				.status(HttpStatusCode.OK)
-				.send({ statusCode: HttpStatusCode.OK, response: response });
+			return res.status(HttpStatusCode.OK).send({
+				statusCode: HttpStatusCode.OK,
+				error: null,
+				data: response,
+			});
 		} catch (e) {
 			next(e);
 		}

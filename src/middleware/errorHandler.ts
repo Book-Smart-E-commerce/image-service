@@ -12,11 +12,9 @@ export const errorHandler = (
 	const statusCode = err.statusCode ?? HttpStatusCode.INTERNAL_SERVER;
 	const message = err.message ?? 'Something went wrong';
 
-	return res
-		.status(statusCode)
-		.send({
-			statusCode,
-			error: { statusCode, error: errorName, message },
-			response: null,
-		});
+	return res.status(statusCode).send({
+		statusCode,
+		error: { statusCode, error: errorName, message },
+		data: null,
+	});
 };

@@ -77,7 +77,8 @@ describe('ImageController', () => {
 			expect(mockService.create).toHaveBeenCalledWith(image);
 			expect(res.send).toHaveBeenCalledWith({
 				statusCode: HttpStatusCode.CREATED,
-				response: {
+				error: null,
+				data: {
 					...image,
 					_id: '63cfde53c12118dcd67b654d',
 					url: 'http://localhost:4700/img/724bccb7e54e8aca0e86a5d62f8ae79a-test.png',
@@ -119,7 +120,8 @@ describe('ImageController', () => {
 			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.CREATED);
 			expect(res.send).toHaveBeenCalledWith({
 				statusCode: HttpStatusCode.CREATED,
-				response: {
+				error: null,
+				data: {
 					...image,
 					description: '',
 					_id: '63cfde53c12118dcd67b654d',
@@ -144,7 +146,8 @@ describe('ImageController', () => {
 			expect(res.status).toHaveBeenCalledWith(HttpStatusCode.OK);
 			expect(res.send).toHaveBeenCalledWith({
 				statusCode: HttpStatusCode.OK,
-				response: image,
+				error: null,
+				data: image,
 			});
 		});
 
@@ -184,7 +187,8 @@ describe('ImageController', () => {
 			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
 			expect(res.send).toBeCalledWith({
 				statusCode: HttpStatusCode.OK,
-				response: data[0],
+				error: null,
+				data: data[0],
 			});
 		});
 
@@ -234,7 +238,8 @@ describe('ImageController', () => {
 			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
 			expect(res.send).toBeCalledWith({
 				statusCode: HttpStatusCode.OK,
-				response: { ...data[0], ...body },
+				error: null,
+				data: { ...data[0], ...body },
 			});
 		});
 
@@ -291,7 +296,8 @@ describe('ImageController', () => {
 			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
 			expect(res.send).toBeCalledWith({
 				statusCode: HttpStatusCode.OK,
-				response: [],
+				error: null,
+				data: [],
 			});
 		});
 
@@ -319,7 +325,8 @@ describe('ImageController', () => {
 			expect(res.status).toBeCalledWith(HttpStatusCode.OK);
 			expect(res.send).toBeCalledWith({
 				statusCode: HttpStatusCode.OK,
-				response: [],
+				error: null,
+				data: [],
 			});
 		});
 

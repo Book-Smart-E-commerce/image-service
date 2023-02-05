@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
 
 export interface HttpError {
 	/**

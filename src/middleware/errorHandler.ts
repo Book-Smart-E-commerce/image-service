@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '@src/common/utils/HttpException';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
 
 export const errorHandler = (
 	err: HttpError,

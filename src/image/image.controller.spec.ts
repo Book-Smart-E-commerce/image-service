@@ -1,7 +1,7 @@
 import { ImageController } from '@image/image.controller';
 import { Image } from '@image/interfaces/image.interface';
 import { jest } from '@jest/globals';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
 import { Response } from 'express';
 import { HttpException } from '@src/common/utils/HttpException';
 import { default as data } from '@src/test/data/images.json';

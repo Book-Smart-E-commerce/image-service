@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
 import { HttpException } from '@src/common/utils/HttpException';
 import { Service } from '@image/interfaces/imageService.interface';
 import { SortEnum } from '@src/common/enums/sort.enum';

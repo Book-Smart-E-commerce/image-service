@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import { Image } from '@image/interfaces/image.interface';
 import { default as data } from '@test/data/images.json';
 import { HttpException } from '@src/common/utils/HttpException';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
 import { Service } from '@image/interfaces/imageService.interface';
 import { UpdateImageDto } from '@image/dtos/updateImage.dto';
 import path from 'path';

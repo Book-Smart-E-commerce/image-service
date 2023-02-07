@@ -8,6 +8,8 @@ import {
 	mockResponse,
 } from '@test/utils/httpMock.utils';
 import 'reflect-metadata';
+import { HttpException } from '@src/common/utils/HttpException';
+import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
 
 jest.mock('validator');
 
@@ -33,5 +35,28 @@ describe('validate', () => {
 		);
 		expect(validator.validateOrReject).toBeCalledTimes(0);
 		expect(validator.validateOrReject).not.toHaveBeenCalled();
+	});
+
+	it('should return an Http error message if validation rejected', async () => {
+		const id = '1';
+		jest.spyOn(validator, 'validateOrReject').mockImplementation(() => {
+			throw new validator.ValidationError();
+		});
+		const isValid = await validate('params')(ParamsDto)(
+			{ ...mockRequest, params: { id } } as any,
+			mockResponse(),
+			mockNextFunction
+		);
+
+		expect(isValid).not.toBeDefined();
+		expect(mockNextFunction).toBeCalledTimes(1);
+		expect(mockNextFunction).toHaveBeenCalledWith(
+			new HttpException({
+				statusCode: HttpStatusCode.BAD_REQUEST,
+				message: '',
+			})
+		);
+		expect(validator.validateOrReject).toBeCalledTimes(1);
+		expect(validator.validateOrReject).toHaveBeenCalledWith({ id });
 	});
 });

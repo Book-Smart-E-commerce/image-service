@@ -8,8 +8,7 @@ import {
 	mockResponse,
 } from '@test/utils/httpMock.utils';
 import 'reflect-metadata';
-import { HttpException } from '@src/common/utils/HttpException';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
+import { HttpStatusCode, HttpException } from '@bse-b2c/common';
 
 jest.mock('validator');
 

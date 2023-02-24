@@ -1,4 +1,7 @@
-import * as R from 'ramda';
+const pipe =
+	(...fns: Array<(arg: any) => any>) =>
+	(value: any) =>
+		fns.reduce((acc, fn) => fn(acc), value);
 
 const trim = (value: string): string => value.trim();
 
@@ -8,9 +11,9 @@ const convertToArray = (value: string): Array<string> =>
 const removeEmptyElements = (values: Array<string>): Array<string> =>
 	values.filter(e => e !== '');
 
-const removeDuplicates = <T>(values: Array<T>): Array<T> => [
+const removeDuplicates = (values: Array<string>): Array<string> => [
 	...new Set(values),
 ];
 
-export const formatQueryToArray = (value: string): Array<string> =>
-	R.pipe(trim, convertToArray, removeEmptyElements, removeDuplicates)(value);
+export const formatQueryToArray = (value: string) =>
+	pipe(trim, convertToArray, removeEmptyElements, removeDuplicates)(value);

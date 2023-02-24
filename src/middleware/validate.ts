@@ -1,8 +1,7 @@
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
-import { HttpException } from '@src/common/utils/HttpException';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
+import { HttpStatusCode, HttpException } from '@bse-b2c/common';
 
 type ClassConstructor<T> = {
 	new (...args: any[]): T;

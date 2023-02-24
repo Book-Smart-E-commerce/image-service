@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
-import { HttpException } from '@src/common/utils/HttpException';
+import { HttpException, HttpStatusCode } from '@bse-b2c/common';
 import { Service } from '@image/interfaces/imageService.interface';
 import { SortEnum } from '@src/common/enums/sort.enum';
 import { SearchDto } from '@image/dtos/search.dto';

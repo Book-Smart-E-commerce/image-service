@@ -1,6 +1,5 @@
 import { Image, ImageDocument } from '@image/interfaces/image.interface';
-import { HttpException } from '@src/common/utils/HttpException';
-import { HttpStatusCode } from '@src/common/enums/HttpStatusCode.enum';
+import { HttpStatusCode, HttpException } from '@bse-b2c/common';
 import { Repository } from '@image/interfaces/imageRepository.interface';
 import { Search } from '@image/interfaces/search.interface';
 import { FilterQuery, Types } from 'mongoose';

@@ -1,7 +1,8 @@
 import express from 'express';
 import { appMiddleware } from '@middleware/app';
 import { router } from '@src/routes';
-import { errorHandler } from '@middleware/errorHandler';
+
+import { errorHandler } from '@bse-b2c/common';
 
 const app = express();
 

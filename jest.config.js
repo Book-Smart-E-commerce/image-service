@@ -3,6 +3,7 @@ module.exports = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	moduleNameMapper: {
+		'@/*': '<rootDir>/$1',
 		'@config/(.*)': '<rootDir>/src/config/$1',
 		'@test/(.*)': '<rootDir>/src/test/$1',
 		'@image/(.*)': '<rootDir>/src/image/$1',

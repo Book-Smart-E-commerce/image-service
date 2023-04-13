@@ -22,6 +22,7 @@ module.exports = {
 			{
 				root: ['./src'],
 				alias: {
+					'@': getPath('./'),
 					'@src': getPath('./src'),
 					'@middleware': getPath('./src/middleware'),
 					'@config': getPath('./src/config'),

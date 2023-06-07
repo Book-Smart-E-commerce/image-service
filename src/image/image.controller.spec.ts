@@ -1,6 +1,5 @@
 import { ImageController } from '@image/image.controller';
 import { Image } from '@image/interfaces/image.interface';
-import { jest } from '@jest/globals';
 import { HttpException, HttpStatusCode } from '@bse-b2c/common';
 import { Response } from 'express';
 import { default as data } from '@src/test/data/images.json';

@@ -1,7 +1,7 @@
 {
   "name": "image-service",
   "version": "1.0.0",
-  "description": "",
+  "description": "Service for CRUD functions for images saved in local storage and access to it via endpoint",
   "main": "src/index.js",
   "scripts": {
     "start": "node dist/server.js",

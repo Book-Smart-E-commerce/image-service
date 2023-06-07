@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Image Service",
+    "description": "This is a complete image upload service."
+  },
+  "servers": [
+    {
+      "description": "Dev Api",
+      "url":"http://localhost:4700/api/image"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Image": {
+        "required": [
+          "name",
+          "size",
+          "key"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "product1.png"
+          },
+          "description": {
+            "type": "string",
+            "default": "",
+            "example": ""
+          },
+          "size": {
+            "type": "number",
+            "example": 11189
+          },
+          "key": {
+            "type": "string",
+            "example": "58cdc3a8f65207de3586620abe0e6788-product1.png"
+          },
+          "url": {
+            "type": "string",
+            "example": "http://localhost:4700/img/58cdc3a8f65207de3586620abe0e6788-product1.png"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-07-21T17:32:28Z"
+          }
+        }
+      }
+    }
+  }
+}
